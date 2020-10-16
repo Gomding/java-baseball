@@ -1,15 +1,15 @@
-﻿/*
-* Computer.java     1.0  2020/10/16
-*
-*
+/*
+ * Computer.java     1.0  2020/10/16
+ *
+ *
  */
 
 package baseballgame;
 
 import java.util.Random;
 
-/**
- * 컴퓨터가 1~9사이의 3자리 난수를 생성하는 클래스 입니다.
+/*
+ * 컴퓨터가 1에서 9 까지 서로 다른 3개의 난수를 생성하는 클래스
  *
  * @version 1.0 2020/10/16
  * @author https://github.com/Gomding
@@ -35,7 +35,7 @@ public class Computer {
     public Computer() {
         Random random;
         int temp;
-        while (number.length() < 3) {
+        while (number.length() < SIZE) {
             random = new Random();
             temp = random.nextInt(MAX_NUM) + ONE;
 
