@@ -1,3 +1,9 @@
+/*
+ * Main.java     1.0  2020/10/16
+ *
+ *
+ */
+
 import baseballgame.Computer;
 
 public class Main {

@@ -26,7 +26,7 @@ public class Computer {
     private static final int ONE = 1;
 
     /* 생선된 숫자를 담을 문자열 */
-    String number = "";
+    private String number = "";
 
     /**
      *Computer 생성자
