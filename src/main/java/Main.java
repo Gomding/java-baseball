@@ -4,15 +4,11 @@
  *
  */
 
-import baseballgame.Computer;
+import baseballgame.BaseballGame;
 
 public class Main {
-
-    public static void main(String[] args) {
-        String numbers;
-        Computer
-                computer = new Computer();
-        numbers = computer.getNumber();
-        System.out.println(numbers);
+    public static void main(String[] args) throws Exception{
+        BaseballGame baseballGame = new BaseballGame();
+        baseballGame.startGame();
     }
 }

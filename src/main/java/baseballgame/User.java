@@ -5,6 +5,9 @@
  */
 package baseballgame;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /*
  * 사용자가 3자리 숫자를 입력하는 기능을 위한 클래스입니다.
  *
@@ -25,14 +28,17 @@ public class User {
     /* 유저가 입력한 숫자를 담을 문자열 */
     private String number;
 
-    public void requestNumber(String input) {
+    public String requestNumber() throws Exception{
         while(number == null || number.isEmpty()) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String input = br.readLine();
             if (checkSize(input) && checkNum(input) && checkDuplicate(input)) {
                 number = input;
             } else {
-                System.out.println("입력값이 잘못됐습니다. 1이상 9이하의 숫자 3개를 적어주세요");
+                System.out.print("입력값이 잘못됐습니다. 서로 다른 1이상 9이하의 숫자 3개를 적어주세요 > ");
             }
         }
+        return number;
     }
 
     private boolean checkSize(String input) {
@@ -52,12 +58,13 @@ public class User {
 
     private boolean checkDuplicate(String input) {
         boolean status = true;
-        String temp;
+        char temp;
         for (int i = 1; i < SIZE; i++) {
-            temp = String.valueOf(input.indexOf(i));
-            if (input.contains(temp)) {
-                status = false;
-                break;
+            temp = input.charAt(i);
+            for (int j = i + 1; j < 3; j++) {
+                if (temp == input.charAt(j)) {
+                    status = false;
+                }
             }
         }
         return status;
