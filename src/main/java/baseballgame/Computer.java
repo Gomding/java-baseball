@@ -79,7 +79,7 @@ public class Computer {
 
     /**
      * number 변수에 접근하기 위한 메서드
-     * 
+     *
      * @return number 변수를 반환해줌
      */
     public String getNumber() {

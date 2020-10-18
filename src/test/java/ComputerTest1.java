@@ -5,6 +5,7 @@
  */
 
 import baseballgame.Computer;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,10 +17,22 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author https://github.com/Gomding
  */
 public class ComputerTest1 {
+
+    Computer computer;
+
+    @Before
+    public void Computer_객체생성() {
+        computer = new Computer();
+    }
+
     @Test
     public void 난수3개가_생성된다() {
-        Computer computer = new Computer();
         assertThat(computer.getNumber().length()).isEqualTo(3);
     }
 
+    @Test
+    public void addNumber_메소드_테스트() {
+        int num = computer.makeRandomNumber();
+        assertThat(num).isLessThan(10);
+    }
 }

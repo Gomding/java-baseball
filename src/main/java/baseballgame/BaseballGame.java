@@ -18,47 +18,113 @@ import java.io.InputStreamReader;
  * @author https://github.com/Gomding
  */
 public class BaseballGame {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    String command;
+    Computer computer;
+    User user = new User();
+    int count;
 
+    /**
+     * 게임을 시작을 알리는 메서드
+     * isPlayOrStop() 메서드가 true값이라면 게임을 종료합니다.
+     *
+     * @throws Exception
+     */
     public void startGame() throws Exception{
+        System.out.println("숫자 야구 게임을 시작하겠습니다.");
         while(true) {
-            System.out.print("1. 게임 시작 / 2. 게임 종료 입력 > ");
-            command = br.readLine();
-            if (command.equals("1")) {
-                Computer computer = new Computer();
-                String comNum = computer.getNumber();
-                playGame(comNum);
-            }else if (command.equals("2")) {
+            if (isPlayOrStop()) {
                 System.out.println("게임을 종료합니다.");
                 break;
             }
-            System.out.println("1 또는 2를 입력해주세요.");
+            resetGame();
+            playGame();
         }
     }
 
-    public void playGame(String comNum) throws Exception{
-        int count = 0;
-        while(true) {
-            System.out.print("1이상 9이하의 숫자 3자리를 입력해주세요 > ");
-            String userNum = new User().requestNumber();
-            if (comNum.equals(userNum)) {
-                System.out.println("스트라이크!! 게임 종료.");
-                System.out.println("시도 횟수 : " + count + "회");
+    /**
+     * 1 또는 2를 입력하여 게임 시작 또는 게임 종료 명령을 받는 메서드
+     * 1을 입력 받으면 야구 게임을 시작함
+     * 2를 입력 받으면 게임을 종료
+     *
+     * @return 입력값이 2라면 true를 반환함
+     * @throws Exception
+     */
+    public boolean isPlayOrStop() throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String command;
+        while (true) {
+            System.out.print("1. 게임 시작 / 2. 게임 종료 > ");
+            command = br.readLine();
+            if (command.equals("1") || command.equals("2")) {
                 break;
             }
-            checkNum(userNum, comNum);
+            System.out.println("[입력 오류] 1 또는 2를 입력해주세요.");
+        }
+        return command.equals("2");
+    }
+
+    /**
+     * computer 객체에 새로운 3자리 숫자로 초기화하기 위함
+     *
+     */
+    public void resetGame() {
+        computer = new Computer();
+        count = 0;
+    }
+
+    public void playGame() throws Exception{
+        while(true) {
+            System.out.print("1이상 9이하의 숫자 3자리를 입력해주세요 > ");
+            user.requestNumber();
             count++;
+            if (isCorrectAnswer()) {
+                break;
+            }
+            checkNum();
         }
     }
 
-    public void checkNum(String userNum, String comNum) {
-        for (int i = 0; i < 3; i++) {
-            if (comNum.contains(String.valueOf(userNum.charAt(i)))) {
-                System.out.println("볼");
-                return;
+    public boolean isCorrectAnswer() {
+        if (user.getNumber().equals(computer.getNumber())) {
+            System.out.println("정답!! 시도 횟수 : " + count + "회");
+            return true;
+        }
+        return false;
+    }
+
+    public void checkNum() {
+        int strike = 0;
+        int ball = 0;
+        for (int i = 0; i < user.getNumber().length(); i++) {
+            if (isStrike(i)) {
+                strike++;
+            } else if (isBall(i)) {
+                ball++;
             }
         }
-        System.out.println("포볼!");
+        printResult(strike, ball);
+    }
+
+    public boolean isStrike(int i) {
+        return (user.getNumber().charAt(i) == computer.getNumber().charAt(i));
+    }
+
+    public boolean isBall(int i) {
+        return (computer.getNumber().contains(String.valueOf(user.getNumber().charAt(i))));
+    }
+
+    public void printResult(int strike, int ball) {
+        StringBuilder result = new StringBuilder();
+        if (strike != 0) {
+            result.append(strike);
+            result.append(" 스트라이크 ");
+        }
+        if (ball != 0) {
+            result.append(ball);
+            result.append(" 볼");
+        }
+        if (result.length() == 0) {
+            result.append("낫싱(포볼)");
+        }
+        System.out.println(result);
     }
 }
