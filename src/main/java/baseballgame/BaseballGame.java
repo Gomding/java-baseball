@@ -18,8 +18,15 @@ import java.io.InputStreamReader;
  * @author https://github.com/Gomding
  */
 public class BaseballGame {
+
+    private final static String START = "1";
+
+    private final static String EXIT = "2";
+
     Computer computer;
+
     User user = new User();
+
     int count;
 
     /**
@@ -54,23 +61,28 @@ public class BaseballGame {
         while (true) {
             System.out.print("1. 게임 시작 / 2. 게임 종료 > ");
             command = br.readLine();
-            if (command.equals("1") || command.equals("2")) {
+            if (command.equals(START) || command.equals(EXIT)) {
                 break;
             }
             System.out.println("[입력 오류] 1 또는 2를 입력해주세요.");
         }
-        return command.equals("2");
+        return command.equals(EXIT);
     }
 
     /**
-     * computer 객체에 새로운 3자리 숫자로 초기화하기 위함
-     *
+     * computer 객체에 새로운 3자리 숫자로 초기화하고 count를 0으로 초기화 해서
+     * 새로운 게임을 준비하는 메서드
      */
     public void resetGame() {
         computer = new Computer();
         count = 0;
     }
 
+    /**
+     * 게임 시작 후 사용자의 입력을 받아 게임을 진행하는 메서드
+     *
+     * @throws Exception
+     */
     public void playGame() throws Exception{
         while(true) {
             System.out.print("1이상 9이하의 숫자 3자리를 입력해주세요 > ");
@@ -83,6 +95,11 @@ public class BaseballGame {
         }
     }
 
+    /**
+     * 정답인지 아닌지 판단하는 메서드
+     *
+     * @return 사용자 입력값과 컴퓨터늬 숫자가 같다면 true를 반환
+     */
     public boolean isCorrectAnswer() {
         if (user.getNumber().equals(computer.getNumber())) {
             System.out.println("정답!! 시도 횟수 : " + count + "회");
@@ -91,6 +108,10 @@ public class BaseballGame {
         return false;
     }
 
+    /**
+     * 사용자가 입력한 숫자를 스트라이크, 볼 이 몇인지 검사후 출력해주는 메서드
+     *
+     */
     public void checkNum() {
         int strike = 0;
         int ball = 0;
@@ -104,14 +125,34 @@ public class BaseballGame {
         printResult(strike, ball);
     }
 
+    /**
+     * 사용자의 입력 숫자중 i번째 숫자가 컴퓨터의 숫자 i번째가 순서와 숫자가 일치해서
+     * 스트라이크(Strike) 인지 확인하는 메서드
+     *
+     * @param i 문자열의 몇번째인지를 나타내는 매개변수 (int 타입)
+     * @return 스트라이크가 맞다면 true 반환
+     */
     public boolean isStrike(int i) {
         return (user.getNumber().charAt(i) == computer.getNumber().charAt(i));
     }
 
+    /**
+     * 사용자가 입력한 숫자 중 i번째 숫자가 컴퓨터의 숫자에 존재하는지 확인하여
+     * 볼(Ball)인지 확인하는 메서드
+     *
+     * @param i 문자열의 몇번째인지를 나타내는 매개변수 (int 타입)
+     * @return 볼이 맞다면 true 반환
+     */
     public boolean isBall(int i) {
         return (computer.getNumber().contains(String.valueOf(user.getNumber().charAt(i))));
     }
 
+    /**
+     * 사용자가 입력한 숫자를 컴퓨터의 숫자와 비교한 결과를 출력하는 메서드
+     *
+     * @param strike 몇번의 strike가 있었는지 나타내는 매개변수
+     * @param ball 몇번의 ball이 있었는지 나타내는 매개변수
+     */
     public void printResult(int strike, int ball) {
         StringBuilder result = new StringBuilder();
         if (strike != 0) {
